@@ -6,7 +6,8 @@ from numpy.core.fromnumeric import argsort
 import torch
 import torch.nn.functional as F
 from torch import nn
-
+import sys
+sys.path.append("/home/vp.shivasan/LineEX/modules/KP_detection")
 from util.misc import (NestedTensor, accuracy, get_world_size,
                        is_dist_avail_and_initialized)
 

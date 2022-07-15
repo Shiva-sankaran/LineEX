@@ -1,5 +1,6 @@
 from cProfile import label
 from html.entities import name2codepoint
+from operator import mod
 from cv2 import sqrt, threshold
 import torch
 import sys
@@ -116,75 +117,9 @@ torch.manual_seed(317)
 torch.backends.cudnn.benchmark = True  
 num_gpus = torch.cuda.device_count()
 
-# def checkifbackground(kp,image):
-
-#     alpha = max(image.shape[0],image.shape[1])*0.05
-#     t1 = int(alpha/2)
-#     t2 = int(alpha/6)
-#     x,y = kp
-
-#     threshold = 0.999   # Best results were obtained with 0.98 for adobe,0.999 for chartOCR and our synthtic dataset
-        
-#     sections = [
-        
-
-#         image[y-t1:y-t2,x-t1:x-t2],
-#         image[y-t1:y-t2,x-t2:x+t2],
-#         image[y-t1:y-t2,x+t2:x+t1],
-#         image[y-t2:y+t2,x-t1:x-t2],
-#         image[y-t2:y+t2,x-t2:x+t2],
-#         image[y-t2:y+t2,x+t2:x+t1],
-#         image[y+t2:y+t1,x-t1:x-t2],
-#         image[y+t2:y+t1,x-t2:x+t2],
-#         image[y+t2:y+t1,x+t2:x+t1],
-#         ]
-
-        
-
-#     sec_hists = []
-    
-#     for i,section in enumerate(sections):
-#         hist = cv2.calcHist([section], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])
-#         hist = cv2.normalize(hist, hist).flatten()
-#         sec_hists.append(hist)
-#     for idx1,h1 in enumerate(sec_hists):
-#         for idx2,h2 in enumerate(sec_hists):
-#             if(idx1 == idx2):
-#                 continue
-#             val = cv2.compareHist(h1, h2, cv2.HISTCMP_CORREL)
-#             if(val < threshold):
-#                 return False
-#     return True
-                
-
 def save_keypoints(image_path,model,model_type = "DA"):
-    image= cv2.imread(image_path)
-    timage = image    
-    h,w,_ = image.shape
-    image = cv2.resize(image, (args.input_size[0], args.input_size[1]))
-    image = np.asarray(image)
-    image = image.astype(np.float32) / 255
-    
-    image = torch.from_numpy(image)
-    image = image.permute((2, 0, 1))
-    image = torch.unsqueeze(image,0)
-
-    # torch.tensor(image, dtype=torch.float32)
-
-    image = image.to(CUDA_, non_blocking=True)
-    
-    
-    output = model(image,return_attn = True)
-    out_bbox = output["pred_boxes"][0]
-    out_bbox = out_bbox.cpu().detach().numpy()
-    x_cords = (out_bbox[:,0]*w).astype(np.uint32)
-    y_cords = (out_bbox[:,1]*h).astype(np.uint32)
-    pred_kp = []
-    for x,y in zip(x_cords,y_cords):
-        if(checkifbackground((x,y),timage)):
-            continue
-        pred_kp.append((x,y))
-
+    pred_kp = keypoints(model = model, image_path= image_path,input_size= (args.input_size[0], args.input_size[1]), CUDA_ = CUDA_)
+    timage= cv2.imread(image_path)
     for x,y in pred_kp:
         timage = cv2.circle(timage,(x,y),radius=5,color=(0,0,255),thickness=-1)
 

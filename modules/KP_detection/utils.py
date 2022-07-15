@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import json
 
+import torch
+
 def checkifbackground(kp,image):
 
     alpha = max(image.shape[0],image.shape[1])*0.05
@@ -144,4 +146,35 @@ def get_chartocr_kp(json_path,image_name,dataset):
         assert 1==0
 
     return kps
+
+
+def keypoints(model,image_path,input_size,CUDA_ = "cpu"):
+
+    image= cv2.imread(image_path)
+    timage = image.copy()
+    h,w,_ = image.shape
+    image = cv2.resize(image, (input_size[0],input_size[1]))
+    image = np.asarray(image)
+    image = image.astype(np.float32) / 255
+    
+    image = torch.from_numpy(image)
+    image = image.permute((2, 0, 1))
+    image = torch.unsqueeze(image,0)
+
+    torch.tensor(image, dtype=torch.float32)
+    image = image.to(CUDA_, non_blocking=True)
+    
+    
+    output = model(image,return_attn =False)
+    out_bbox = output["pred_boxes"][0]
+    out_bbox = out_bbox.cpu().detach().numpy()
+    x_cords = (out_bbox[:,0]*w).astype(np.uint32)
+    y_cords = (out_bbox[:,1]*h).astype(np.uint32)
+    pred_kp  = []
+    for x,y in zip(x_cords,y_cords):
+        if(checkifbackground((x,y),timage)):
+            continue
+
+        pred_kp.append((x,y))
+    return pred_kp
 
