@@ -161,7 +161,6 @@ def keypoints(model,image_path,input_size,CUDA_ = "cpu"):
     image = image.permute((2, 0, 1))
     image = torch.unsqueeze(image,0)
 
-    torch.tensor(image, dtype=torch.float32)
     image = image.to(CUDA_, non_blocking=True)
     
     
