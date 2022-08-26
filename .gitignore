@@ -1,3 +1,6 @@
+__pycache__/
+*.pyc
+
 modules/KP_detection/pretrained_ckpts/
 modules/KP_detection/tensorboard
 modules/KP_detection/training
