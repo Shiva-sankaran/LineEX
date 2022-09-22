@@ -1,90 +1,78 @@
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: linux-64
-_libgcc_mutex=0.1=main
-_openmp_mutex=5.1=1_gnu
-blas=1.0=mkl
-brotlipy=0.7.0=py38h27cfd23_1003
-bzip2=1.0.8=h7b6447c_0
-ca-certificates=2022.07.19=h06a4308_0
-certifi=2022.6.15=py38h06a4308_0
-cffi=1.15.0=py38hd667e15_1
-charset-normalizer=2.0.4=pyhd3eb1b0_0
-cryptography=37.0.1=py38h9ce1e76_0
-cudatoolkit=11.3.1=h2bc3f7f_2
-cycler=0.11.0=pypi_0
-easyocr=1.5.0=pypi_0
-ffmpeg=4.3=hf484d3e_0
-fonttools=4.34.4=pypi_0
-freetype=2.11.0=h70c0345_0
-giflib=5.2.1=h7b6447c_0
-gmp=6.2.1=h295c915_3
-gnutls=3.6.15=he1e5248_0
-idna=3.3=pyhd3eb1b0_0
-imageio=2.20.0=pypi_0
-intel-openmp=2021.4.0=h06a4308_3561
-jpeg=9e=h7f8727e_0
-kiwisolver=1.4.4=pypi_0
-lame=3.100=h7b6447c_0
-lcms2=2.12=h3be6417_0
-ld_impl_linux-64=2.38=h1181459_1
-libffi=3.3=he6710b0_2
-libgcc-ng=11.2.0=h1234567_1
-libgomp=11.2.0=h1234567_1
-libiconv=1.16=h7f8727e_2
-libidn2=2.3.2=h7f8727e_0
-libpng=1.6.37=hbc83047_0
-libstdcxx-ng=11.2.0=h1234567_1
-libtasn1=4.16.0=h27cfd23_0
-libtiff=4.2.0=h2818925_1
-libunistring=0.9.10=h27cfd23_0
-libwebp=1.2.2=h55f646e_0
-libwebp-base=1.2.2=h7f8727e_0
-lz4-c=1.9.3=h295c915_1
-matplotlib=3.5.2=pypi_0
-mkl=2021.4.0=h06a4308_640
-mkl-service=2.4.0=py38h7f8727e_0
-mkl_fft=1.3.1=py38hd3c417c_0
-mkl_random=1.2.2=py38h51133e4_0
-ncurses=6.3=h5eee18b_3
-nettle=3.7.3=hbbd107a_1
-networkx=2.8.5=pypi_0
-numpy=1.23.1=pypi_0
-numpy-base=1.22.3=py38hf524024_0
-opencv-python=4.6.0.66=pypi_0
-opencv-python-headless=4.5.4.60=pypi_0
-openh264=2.1.1=h4ff587b_0
-openssl=1.1.1q=h7f8727e_0
-packaging=21.3=pypi_0
-pillow=9.2.0=py38hace64e9_1
-pip=22.1.2=py38h06a4308_0
-pycparser=2.21=pyhd3eb1b0_0
-pyopenssl=22.0.0=pyhd3eb1b0_0
-pyparsing=3.0.9=pypi_0
-pysocks=1.7.1=py38h06a4308_0
-python=3.8.13=h12debd9_0
-python-bidi=0.4.2=pypi_0
-python-dateutil=2.8.2=pypi_0
-pytorch=1.12.0=py3.8_cuda11.3_cudnn8.3.2_0
-pytorch-mutex=1.0=cuda
-pywavelets=1.3.0=pypi_0
-pyyaml=6.0=pypi_0
-readline=8.1.2=h7f8727e_1
-requests=2.28.1=py38h06a4308_0
-scikit-image=0.19.3=pypi_0
-scipy=1.8.1=pypi_0
-setuptools=61.2.0=py38h06a4308_0
-six=1.16.0=pyhd3eb1b0_1
-sqlite=3.38.5=hc218d9a_0
-tifffile=2022.5.4=pypi_0
-timm=0.5.4=pypi_0
-tk=8.6.12=h1ccaba5_0
-torchaudio=0.12.0=py38_cu113
-torchvision=0.13.0=py38_cu113
-tqdm=4.64.0=pypi_0
-typing_extensions=4.1.1=pyh06a4308_0
-urllib3=1.26.9=py38h06a4308_0
-wheel=0.37.1=pyhd3eb1b0_0
-xz=5.2.5=h7f8727e_1
-zlib=1.2.12=h7f8727e_2
-zstd=1.5.2=ha4553b6_0
+asttokens @ file:///home/conda/feedstock_root/build_artifacts/asttokens_1618968359944/work
+backcall @ file:///home/conda/feedstock_root/build_artifacts/backcall_1592338393461/work
+backports.functools-lru-cache @ file:///home/conda/feedstock_root/build_artifacts/backports.functools_lru_cache_1618230623929/work
+brotlipy==0.7.0
+certifi==2022.6.15
+cffi @ file:///opt/conda/conda-bld/cffi_1642701102775/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+cpools==0.0.0
+cryptography @ file:///tmp/build/80754af9/cryptography_1652083738073/work
+cycler==0.11.0
+debugpy @ file:///home/conda/feedstock_root/build_artifacts/debugpy_1649586349877/work
+decorator @ file:///home/conda/feedstock_root/build_artifacts/decorator_1641555617451/work
+docopt==0.6.2
+easyocr==1.5.0
+entrypoints @ file:///home/conda/feedstock_root/build_artifacts/entrypoints_1643888246732/work
+executing @ file:///home/conda/feedstock_root/build_artifacts/executing_1658852325129/work
+fonttools==4.34.4
+idna @ file:///tmp/build/80754af9/idna_1637925883363/work
+imageio==2.20.0
+ipykernel @ file:///home/conda/feedstock_root/build_artifacts/ipykernel_1655241626755/work
+ipython @ file:///home/conda/feedstock_root/build_artifacts/ipython_1653754926575/work
+jedi @ file:///home/conda/feedstock_root/build_artifacts/jedi_1659959867326/work
+joblib==1.1.0
+jupyter-client @ file:///home/conda/feedstock_root/build_artifacts/jupyter_client_1633454794268/work
+jupyter_core @ file:///home/conda/feedstock_root/build_artifacts/jupyter_core_1658332349812/work
+kiwisolver==1.4.4
+matplotlib==3.5.2
+matplotlib-inline @ file:///home/conda/feedstock_root/build_artifacts/matplotlib-inline_1631080358261/work
+mkl-fft==1.3.1
+mkl-random @ file:///tmp/build/80754af9/mkl_random_1626186064646/work
+mkl-service==2.4.0
+nest-asyncio @ file:///home/conda/feedstock_root/build_artifacts/nest-asyncio_1648959695634/work
+networkx==2.8.5
+numpy==1.23.1
+opencv-python==4.6.0.66
+opencv-python-headless==4.5.4.60
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1637239678211/work
+pandas==1.4.3
+parso @ file:///home/conda/feedstock_root/build_artifacts/parso_1638334955874/work
+pexpect @ file:///home/conda/feedstock_root/build_artifacts/pexpect_1602535608087/work
+pickleshare @ file:///home/conda/feedstock_root/build_artifacts/pickleshare_1602536217715/work
+Pillow==9.2.0
+pipreqs==0.4.11
+prompt-toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1656332401605/work
+psutil @ file:///home/conda/feedstock_root/build_artifacts/psutil_1653089172347/work
+ptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1609419310487/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+pure-eval @ file:///home/conda/feedstock_root/build_artifacts/pure_eval_1642875951954/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1650904496387/work
+pyOpenSSL @ file:///opt/conda/conda-bld/pyopenssl_1643788558760/work
+pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1652235407899/work
+PySocks @ file:///tmp/build/80754af9/pysocks_1605305779399/work
+python-bidi==0.4.2
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
+pytz==2022.2
+PyWavelets==1.3.0
+PyYAML==6.0
+pyzmq==19.0.2
+requests @ file:///opt/conda/conda-bld/requests_1657734628632/work
+scikit-image==0.19.3
+scikit-learn==1.1.2
+scipy==1.8.1
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sklearn==0.0
+stack-data @ file:///home/conda/feedstock_root/build_artifacts/stack_data_1655315839047/work
+threadpoolctl==3.1.0
+tifffile==2022.5.4
+timm==0.5.4
+torch==1.12.0
+torchaudio==0.12.0
+torchvision==0.13.0
+tornado @ file:///home/conda/feedstock_root/build_artifacts/tornado_1648827257044/work
+tqdm==4.64.0
+traitlets @ file:///home/conda/feedstock_root/build_artifacts/traitlets_1655411388954/work
+typing_extensions @ file:///opt/conda/conda-bld/typing_extensions_1647553014482/work
+urllib3 @ file:///opt/conda/conda-bld/urllib3_1650639997961/work
+wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1600965781394/work
+yarg==0.1.9

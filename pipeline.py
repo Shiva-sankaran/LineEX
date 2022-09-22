@@ -143,15 +143,10 @@ parser.add_argument('--num_workers', default=24, type=int)
 parser.add_argument('--show_keypoints', default=True, type=bool)
 
 ## CUSTOM ARGS ##
-parser.add_argument('--input_path',default="sample_input/")
+parser.add_argument('--input_path',default="sample_input")
 parser.add_argument('--output_path',default="sample_output/")
-# parser.add_argument('--data_path',default='/home/md.hassan/charts/s_CornerNet/synth_data/data/line/figqa/val/',help = "path to data (Ours, Adobe)")
-# parser.add_argument('--LineEX_path',default="LineEX/modules/KP_detection/pretrained_ckpts/ckpt_L.t7")
 parser.add_argument('--use_gpu',default=True)
 parser.add_argument('--cuda_id',default=3)
-
-
-
 
 args, unknown = parser.parse_known_args()
 if(args.use_gpu):
@@ -200,23 +195,23 @@ transform_test = transforms.Compose([
                              0.229, 0.224, 0.225])
     ])
 
-args.input_path = '/home/vp.shivasan/LineEX/input'
-args.output_path = '/home/vp.shivasan/LineEX/output/'
-print("currnet dir",os.getcwd())
+args.input_path = 'sample_input'
+args.output_path = 'sample_output/'
+args.plot_boxes = True
 print(args.input_path)
 input_files = os.listdir(args.input_path)
 print(input_files)
 for f in os.listdir(args.output_path):
     os.remove(args.output_path  + f) 
 
-print("Running whole pipeling for {} images".format(len(input_files)))
+print("Running whole pipeline for {} images".format(len(input_files)))
 timings = []
 for image_name in tq.tqdm(input_files):
     start_time = time.time()
     # print("Running: {}".format(image_name))
     file_path = args.input_path + "/" + image_name
 
-    legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path)
+    legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path, args.plot_boxes)
     x_text, x_coords, x_ratio, x_med_ids = xticks_info
     y_text, y_coords, y_ratio, y_med_ids = yticks_info
     if(legend_bboxes == []):
@@ -306,11 +301,8 @@ for image_name in tq.tqdm(input_files):
         draw.line(xy_list, fill=(255, 0, 0), width=1)
     save_path = args.output_path + 'mapped_' + image_name
     image_cls.save(save_path)
-    print(time.time()-start_time)
-    timings.append(time.time()-start_time)
+    print(time.time() - start_time)
+    timings.append(time.time() - start_time)
 
 
 print("Overall time taken to run {} is {}".format(len(input_files),np.mean(timings)))
-
-
-

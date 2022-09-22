@@ -267,8 +267,8 @@ def get_ratio(text, coord):
 	best_tick_ids = combination_list[med_idx]
 	return med, best_tick_ids
 
-def run_element_det(model, image_path, image_name, image_save_path):
-	image = cv2.imread(image_path + '/' + image_name)
+def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
+	image = cv2.imread(image_path)
 	image_ = image.copy()
 	image = image.astype(np.float32)
 	image = normalize(image)
@@ -319,33 +319,6 @@ def run_element_det(model, image_path, image_name, image_save_path):
 	else:
 		ocr_boxes = []
 		ocr_text = []
-
-	unique_boxes = {}
-	for cls, box in zip(pred_classes[unique_idx], pred_boxes[unique_idx]):
-		# plot_box(image_, cls, box)
-		if cls == 1:
-			giou_ytitle = match_text_boxes(ocr_boxes, box.unsqueeze(0))
-			ocr_box = ocr_boxes[giou_ytitle.argmax()]
-			box = box_ops.box_xyxy_to_cxcywh(torch.as_tensor(ocr_box))
-			# if find_iou(ocr_box, box) > 0: 
-			# 	ytitle_text = ocr_text[giou_title.argmax()]
-			# else:
-			# 	ytitle_text = None
-		# elif cls == 2:
-		# 	giou_title = match_text_boxes(ocr_boxes, box.unsqueeze(0))
-		# 	ocr_box = ocr_boxes[giou_title.argmax()]
-		# 	if find_iou(ocr_box, box) > 0: 
-		# 		title_text = ocr_text[giou_title.argmax()]
-		# 	else:
-		# 		title_text = None
-		# elif cls == 3:
-		# 	giou_xtitle = match_text_boxes(ocr_boxes, box.unsqueeze(0))
-		# 	ocr_box = ocr_boxes[giou_xtitle.argmax()]
-		# 	if find_iou(ocr_box, box) > 0: 
-		# 		xtitle_text = ocr_text[giou_xtitle.argmax()]
-		# 	else:
-		# 		xtitle_text = None
-		unique_boxes[int(cls)] = box
 
 	# plot detr predictions (non unique boxes)
 	tick_bboxes = []
@@ -412,39 +385,65 @@ def run_element_det(model, image_path, image_name, image_save_path):
 		final_leg_text_box = box_ops.box_xyxy_to_cxcywh(torch.tensor(np.array(final_leg_text_box)))
 
 	image_, final_ticks, tick_texts = handle_ticks(image_, ocr_text, ocr_box_ids, tick_bboxes, det_box_ids)
-	final_ticks = np.array(final_ticks)
-	x_temp = final_ticks[:, 0]
-	y_temp = h - final_ticks[:, 1]
-	slopes = y_temp/x_temp
-	xticks = slopes < h/w
-	yticks = slopes > h/w
+	try:
+		final_ticks = np.array(final_ticks)
+		x_temp = final_ticks[:, 0]
+		y_temp = h - final_ticks[:, 1]
+		slopes = y_temp/x_temp
+		xticks = slopes < h/w
+		yticks = slopes > h/w
 
-	xticks_boxes = final_ticks[xticks]
-	xticks_text = np.array(tick_texts)[xticks][xticks_boxes[:, 0].argsort()]
-	xticks_boxes = xticks_boxes[xticks_boxes[:, 0].argsort()]
-	yticks_boxes = final_ticks[yticks]
-	yticks_text = np.array(tick_texts)[yticks][yticks_boxes[:, 1].argsort()]
-	yticks_boxes = yticks_boxes[yticks_boxes[:, 1].argsort()]
+		xticks_boxes = final_ticks[xticks]
+		xticks_text = np.array(tick_texts)[xticks][xticks_boxes[:, 0].argsort()]
+		xticks_boxes = xticks_boxes[xticks_boxes[:, 0].argsort()]
+		yticks_boxes = final_ticks[yticks]
+		yticks_text = np.array(tick_texts)[yticks][yticks_boxes[:, 1].argsort()]
+		yticks_boxes = yticks_boxes[yticks_boxes[:, 1].argsort()]
+	except:
+		print("NEED TO HANDLE NO TICKS REMAINING")
+		return 
+
+	unique_boxes = {}
+	for cls, box in zip(pred_classes[unique_idx], pred_boxes[unique_idx]):
+		# plot_box(image_, cls, box)
+		if cls == 1: 
+			title_boxes = []
+			det_title = torch.as_tensor(np.array(box.unsqueeze(0)))
+			det_title = box_ops.box_cxcywh_to_xyxy(det_title)
+			for i in range(len(ocr_boxes)):
+				if find_iou(ocr_boxes[i], det_title[0]) > 0:
+					title_boxes.append(ocr_boxes[i])
+
+			title_boxes = np.array(title_boxes)
+			if len(title_boxes) > 0 and title_boxes.ndim == 2:
+				title_boxes = [min(title_boxes[:, 0]), min(title_boxes[:, 1]), max(title_boxes[:, 2]), max(title_boxes[:, 3])]
+				box = box_ops.box_xyxy_to_cxcywh(torch.as_tensor(title_boxes))
+			elif len(title_boxes) == 1:
+				box = box_ops.box_xyxy_to_cxcywh(torch.as_tensor(title_boxes))
+			else:
+				continue
+		unique_boxes[int(cls)] = box
 
 	# DEBUG: drawing detection boxes
-	xticks_boxes_ = xticks_boxes.copy().astype(np.uint32)
-	yticks_boxes_ = yticks_boxes.copy().astype(np.uint32)
-	for i in range(len(xticks_boxes_)):
-		plot_box(image_, 6, xticks_boxes_[i])
-		# cv2.rectangle(image_, xticks_boxes_[i][0:2]-xticks_boxes_[i][2:]//2, xticks_boxes_[i][0:2]+xticks_boxes_[i][2:]//2,(0, 255, 0), 1)
-		cv2.putText(image_, xticks_text[i], xticks_boxes_[i][0:2], font, fontScale, (0, 0, 0), 1, cv2.LINE_AA)      
-	for i in range(len(yticks_boxes_)):
-		plot_box(image_, 6, yticks_boxes_[i])
-		# cv2.rectangle(image_, yticks_boxes_[i][0:2]-yticks_boxes_[i][2:]//2, yticks_boxes_[i][0:2]+yticks_boxes_[i][2:]//2,(0, 255, 0), 1)
-		cv2.putText(image_, yticks_text[i], yticks_boxes_[i][0:2], font, fontScale, (0, 0, 0), 1, cv2.LINE_AA)      
-	for marker_box, text, text_box in zip(final_marker, final_leg_text, final_leg_text_box):
-		# cv2.rectangle(image_, box[i][0:2]-box[i][2:]//2, box[i][0:2]+box[i][2:]//2,(0, 255, 0), 1)
-		plot_box(image_, 7, marker_box)
-		plot_box(image_, 8, text_box)
-		cv2.putText(image_, str(text)[2:-2], marker_box[:2].astype(np.uint32), font, fontScale, (0, 0, 0), 1, cv2.LINE_AA)
-	for i in unique_boxes.keys():
-		plot_box(image_, i, unique_boxes[i])
-	cv2.imwrite(image_save_path + 'det_' + image_name, image_)
+	if plot_boxes:
+		xticks_boxes_ = xticks_boxes.copy().astype(np.uint32)
+		yticks_boxes_ = yticks_boxes.copy().astype(np.uint32)
+		for i in range(len(xticks_boxes_)):
+			plot_box(image_, 6, xticks_boxes_[i])
+			# cv2.rectangle(image_, xticks_boxes_[i][0:2]-xticks_boxes_[i][2:]//2, xticks_boxes_[i][0:2]+xticks_boxes_[i][2:]//2,(0, 255, 0), 1)
+			# cv2.putText(image_, xticks_text[i], xticks_boxes_[i][0:2], font, fontScale, (0, 0, 0), 1, cv2.LINE_AA)      
+		for i in range(len(yticks_boxes_)):
+			plot_box(image_, 6, yticks_boxes_[i])
+			# cv2.rectangle(image_, yticks_boxes_[i][0:2]-yticks_boxes_[i][2:]//2, yticks_boxes_[i][0:2]+yticks_boxes_[i][2:]//2,(0, 255, 0), 1)
+			# cv2.putText(image_, yticks_text[i], yticks_boxes_[i][0:2], font, fontScale, (0, 0, 0), 1, cv2.LINE_AA)      
+		for marker_box, text, text_box in zip(final_marker, final_leg_text, final_leg_text_box):
+			# cv2.rectangle(image_, box[i][0:2]-box[i][2:]//2, box[i][0:2]+box[i][2:]//2,(0, 255, 0), 1)
+			plot_box(image_, 7, marker_box)
+			plot_box(image_, 8, text_box)
+			# cv2.putText(image_, str(text)[2:-2], marker_box[:2].astype(np.uint32), font, fontScale, (0, 0, 0), 1, cv2.LINE_AA)
+		for i in unique_boxes.keys():
+			plot_box(image_, i, unique_boxes[i])
+		cv2.imwrite(image_save_path + 'det_' + image_name, image_)
 
 	x_text, x_coords = get_ticks_text_coord(xticks_text, xticks_boxes, 0)
 	y_text, y_coords = get_ticks_text_coord(yticks_text, yticks_boxes, 1)
