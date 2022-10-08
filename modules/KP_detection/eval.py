@@ -67,9 +67,9 @@ parser.add_argument('--chartOCR_pred',default="/home/vp.shivasan/ChartIE/val_syn
 
 
 parser.add_argument('--show_LineEX_D',default = True)
-parser.add_argument('--LineEX_D_Path',default="LineEX/modules/KP_detection/pretrained_ckpts/ckpt_L.t7")
+parser.add_argument('--LineEX_D_Path',default="ckpts/ckpt_L.t7")
 parser.add_argument('--show_LineEX_DA',default = True)
-parser.add_argument('--LineEX_DA_Path',default="LineEX/modules/KP_detection/pretrained_ckpts/ckpt_L+D.t7")
+parser.add_argument('--LineEX_DA_Path',default="ckpts/ckpt_L+D.t7")
 parser.add_argument('--use_gpu',default=True)
 parser.add_argument('--cuda_id',default=3)
 

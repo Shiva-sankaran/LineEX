@@ -448,17 +448,17 @@ def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
 	x_text, x_coords = get_ticks_text_coord(xticks_text, xticks_boxes, 0)
 	y_text, y_coords = get_ticks_text_coord(yticks_text, yticks_boxes, 1)
 	if len(x_text) < 2 and len(y_text) >= 2:
-		print("Not enough x ticks extracted. Unable to scale x axis")
+		# print("Not enough x ticks extracted. Unable to scale x axis")
 		y_ratio, y_med_ids = get_ratio(y_text, np.array(y_coords)[:, 1])
 		yticks_info = [y_text, y_coords, y_ratio, y_med_ids]
 		return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, [[],[],[],[]], yticks_info, unique_boxes
 	elif len(y_text) < 2 and len(x_text) >= 2:
-		print("Not enough y ticks extracted. Unable to scale y axis")
+		# print("Not enough y ticks extracted. Unable to scale y axis")
 		x_ratio, x_med_ids = get_ratio(x_text, np.array(x_coords)[:, 0])
 		xticks_info = [x_text, x_coords, x_ratio, x_med_ids]
 		return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, xticks_info, [[],[],[],[]], unique_boxes
 	elif len(y_text) < 2 and len(x_text) < 2:
-		print("Not enough x ticks and y ticks extracted. Unable to scale both axes")
+		# print("Not enough x ticks and y ticks extracted. Unable to scale both axes")
 		return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, [[],[],[],[]], [[],[],[],[]], unique_boxes
 
 	x_ratio, x_med_ids = get_ratio(x_text, np.array(x_coords)[:, 0])

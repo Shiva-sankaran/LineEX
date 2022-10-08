@@ -10,34 +10,81 @@ The LineEX pipeline consists of three modular stages, which can be used independ
 
 ## Usage
 
+Clone this repository:
+```
+git clone https://github.com/Shiva-sankaran/LineEX.git
+cd LineEx
+```
 Install the dependencies:
 
 ```
-python -m venv pyenv
-source pyenv/bin/activate
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate LineEx
 ```
 
 Each of the modules can be used separately, or the entire pipeline can be called at once to extract the desired information.
 
-### Keypoint Extraction
+## Testing
 
-### Chart Element Detection and Text Extraction
+Output is stored in the corresponding directory
 
-Training:
+### Overall
+```
+python pipeline.py
+```
+### Keypoint detection
+```
+cd modules/KP_detection
+python run.py
+```
+### Chart element detection
+```
+cd modules/CE_detection
+python run.py
+```
+
+## Evaluation
+Refer to the paper for more information about the metrics
+
+### Overall
+
+Overall metrics is essentially the metric for grouping and legend mapping
+```
+cd modules/Grouping_legend_mapping
+python eval.py
+```
+### Keypoint detection
+```
+cd modules/KP_detection
+python eval.py
+```
+### Chart element detection
+```
+cd modules/CE_detection
+python eval.py
+```
 
 `python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 main_charts_dist.py --coco_path path_to_data --batch_size 14 --dataset_file charts --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth`
 
-The weights for the element detection model are availabel at: [link]
+## Training
 
-Evaluation:
 
-`python modules/CE_detection/run.py`
 
-### Overall Pipeline
+### Keypoint Extraction
+```
+cd modules/KP_detection
+python train.py
+```
 
-`python pipeline.py`
+### Chart Element Detection and Text Extraction
+```
+python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 main_charts_dist.py --coco_path path_to_data --batch_size 14 --dataset_file charts --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth
+```
 
-Results are stored in `sample_output`
 
-### Citation
+
+## TBA
+Need to change data paths
+
+Add folders for data and weight 
+## Citation

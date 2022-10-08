@@ -1,9 +1,10 @@
 __pycache__/
 *.pyc
 
-modules/KP_detection/pretrained_ckpts/
+modules/KP_detection/ckpts/
 modules/KP_detection/tensorboard
 modules/KP_detection/training
 modules/KP_detection/input
 modules/KP_detection/results
-
+modules/CE_detection/ckpts/
+modules/Grouping_legend_mapping/ckpts/

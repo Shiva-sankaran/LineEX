@@ -73,12 +73,12 @@ parser.add_argument('--num_workers', default=24, type=int)
 
 ## CUSTOM ARGS ##
 
-parser.add_argument('--input_path',default="LineEX/modules/KP_detection/input")
-parser.add_argument('--save_path',default="LineEX/modules/KP_detection/results")
+parser.add_argument('--input_path',default="sample_input")
+parser.add_argument('--save_path',default="sample_output")
 parser.add_argument('--show_LineEX_D',default = True)
-parser.add_argument('--LineEX_D_Path',default="LineEX/modules/KP_detection/pretrained_ckpts/ckpt_L.t7")
+parser.add_argument('--LineEX_D_Path',default="ckpts/ckpt_L.t7")
 parser.add_argument('--show_LineEX_DA',default = True)
-parser.add_argument('--LineEX_DA_Path',default="LineEX/modules/KP_detection/pretrained_ckpts/ckpt_L+D.t7")
+parser.add_argument('--LineEX_DA_Path',default="ckpts/ckpt_L+D.t7")
 parser.add_argument('--use_gpu',default=True)
 parser.add_argument('--cuda_id',default=3)
 
@@ -86,7 +86,7 @@ parser.add_argument('--cuda_id',default=3)
 
 args = parser.parse_args()
 
-assert (args.show_LineEX_D or args.show_LineEX_DA) == True, "Atleast one model should be enabled"
+assert (args.show_LineEX_D or args.show_LineEX_DA) == True, "Atleast one model should be True"
 
 if(args.use_gpu):
     CUDA_ = 'cuda:'+str(args.cuda_id)

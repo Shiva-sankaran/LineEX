@@ -36,7 +36,7 @@ parser_det.add_argument('--clip_max_norm', default=0.1, type=float,
                     help='gradient clipping max norm')
 
 # Model parameters
-parser_det.add_argument('--weights', type=str, default='/home/md.hassan/charts/detr/charts/ckpt/figqa_dataset/checkpoint110.pth')
+parser_det.add_argument('--weights', type=str, default='modules/CE_detection/ckpts/checkpoint110.pth')
 # parser_det.add_argument('--weights', type=str, default='/home/md.hassan/charts/detr/charts/ckpt/final_dataset/checkpoint_latest.pth')
 
 # * Backbone
@@ -145,8 +145,17 @@ parser.add_argument('--show_keypoints', default=True, type=bool)
 ## CUSTOM ARGS ##
 parser.add_argument('--input_path',default="sample_input")
 parser.add_argument('--output_path',default="sample_output/")
+# parser.add_argument('--data_path',default='/home/md.hassan/charts/s_CornerNet/synth_data/data/line/figqa/val/',help = "path to data (Ours, Adobe)")
 parser.add_argument('--use_gpu',default=True)
-parser.add_argument('--cuda_id',default=3)
+parser.add_argument('--cuda_id',default=1)
+
+
+## KEYPOINT CHECKPOINT ##
+parser.add_argument('--KP_path',default="modules/KP_detection/pretrained_ckpts/ckpt_L+D.t7")
+
+## GROUPING AND LEGEND MAPPING CHECKPOINT ##
+parser.add_argument('--deepranking_path',default="modules/Grouping_legend_mapping/ckpts/ckpt_30.t7")
+parser.add_argument('--MLP_path',default="modules/Grouping_legend_mapping/ckpts/mlp_ckpt.t7")
 
 args, unknown = parser.parse_known_args()
 if(args.use_gpu):
@@ -167,26 +176,25 @@ print("Loaded element detection model at Epoch {}".format(checkpoint['epoch']))
 
 MLP = legend_network(200)
 MLP = MLP.to(CUDA_)
-state = torch.load('/home/vp.shivasan/ChartIE/legend_mapping2/legend_network/training/cat_deepranking_mod_legend_line/line_latest_ckpt.t7', map_location = 'cpu')
+state = torch.load(args.MLP_path, map_location = 'cpu')
 MLP.load_state_dict(state['state_dict'])
 MLP = MLP.to(CUDA_)
 MLP.eval()
 
 emb_model = TripletNet(resnet101())
-state = torch.load('/home/vp.shivasan/image-similarity-using-deep-ranking/checkpoint3/ckpt_30.t7', map_location = 'cpu')
+state = torch.load(args.deepranking_path, map_location = 'cpu')
 emb_model.load_state_dict(state['state_dict'])
 emb_model.eval()
 emb_model = emb_model.to(CUDA_)
 
 LineEX  = Model(args)
 LineEX = LineEX.to(CUDA_)
-state2 = torch.load('/home/vp.shivasan/ChartIE/checkpoint/checkpoint_l1_ang_150_0.99.t7', map_location = 'cpu')
+state2 = torch.load(args.KP_path, map_location = 'cpu')
 LineEX.load_state_dict(state2['state_dict'])
 model2 = LineEX.to(CUDA_)
 LineEX.eval()
 
 
-pred_line = {}
 transform_test = transforms.Compose([
         transforms.Resize(224),
         transforms.CenterCrop(224),
@@ -195,8 +203,7 @@ transform_test = transforms.Compose([
                              0.229, 0.224, 0.225])
     ])
 
-args.input_path = 'sample_input'
-args.output_path = 'sample_output/'
+
 args.plot_boxes = True
 print(args.input_path)
 input_files = os.listdir(args.input_path)
@@ -207,8 +214,10 @@ for f in os.listdir(args.output_path):
 print("Running whole pipeline for {} images".format(len(input_files)))
 timings = []
 for image_name in tq.tqdm(input_files):
+    pred_line = {}
+
     start_time = time.time()
-    # print("Running: {}".format(image_name))
+    print("Running: {}".format(image_name))
     file_path = args.input_path + "/" + image_name
 
     legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path, args.plot_boxes)
@@ -223,7 +232,6 @@ for image_name in tq.tqdm(input_files):
     image = cv2.imread(file_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    # data1 = ratio * (pixel1 - pixel0) + data0
     scaled_kps = np.array(all_kps).copy()
     try:
         scaled_kps[:, 0] = (np.array(all_kps)[:, 0] - x_coords[x_med_ids[0]][0]) * x_ratio + x_text[x_med_ids[0]]
@@ -290,6 +298,8 @@ for image_name in tq.tqdm(input_files):
         draw.line(line, fill=(0, 255, 0), width=2)
         lines[i] = line
         pred_line[image_name].append(line_)
+    with open(args.output_path+ "/pred_data_"+ image_name+".json", "w") as outfile:
+        json.dump(pred_line, outfile)
     
 
     for line_idx_, line in lines.items():
