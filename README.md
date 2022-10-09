@@ -25,7 +25,7 @@ conda activate LineEX
 ### Downlaod weights and data
 Weights and data will be placed at the correct folders
 ```
-chmod +x donwload.sh
+chmod +x download.sh
 ./download.sh
 ```
 
