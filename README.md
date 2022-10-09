@@ -13,13 +13,13 @@ The LineEX pipeline consists of three modular stages, which can be used independ
 ### Clone this repository:
 ```
 git clone https://github.com/Shiva-sankaran/LineEX.git
-cd LineEx
+cd LineEX
 ```
 ### Install the dependencies:
 
 ```
 conda env create -f environment.yml
-conda activate LineEx
+conda activate LineEX
 ```
 
 ### Downlaod weights and data
