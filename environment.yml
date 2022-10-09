@@ -1,4 +1,4 @@
-name: LineEx
+name: LineEX
 channels:
   - conda-forge
   - defaults
@@ -84,14 +84,17 @@ dependencies:
     - aiohttp==3.8.1
     - aiosignal==1.2.0
     - async-timeout==4.0.2
+    - beautifulsoup4==4.11.1
     - cachetools==5.0.0
     - charset-normalizer==2.0.10
     - cycler==0.11.0
     - easyocr==1.5.0
+    - filelock==3.8.0
     - fonttools==4.29.0
     - frozenlist==1.3.0
     - fsspec==2022.1.0
     - future==0.18.2
+    - gdown==4.5.1
     - google-auth==2.5.0
     - google-auth-oauthlib==0.4.6
     - grpcio==1.43.0
@@ -117,6 +120,7 @@ dependencies:
     - pyasn1-modules==0.2.8
     - pycocotools==2.0.4
     - pydeprecate==0.3.1
+    - pysocks==1.7.1
     - python-bidi==0.4.2
     - pytorch-lightning==1.5.9
     - pytz==2021.3
@@ -129,6 +133,7 @@ dependencies:
     - scikit-learn==1.1.1
     - scipy==1.7.3
     - setuptools==59.5.0
+    - soupsieve==2.3.2.post1
     - tensorboard==2.8.0
     - tensorboard-data-server==0.6.1
     - tensorboard-plugin-wit==1.8.1

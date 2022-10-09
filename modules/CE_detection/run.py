@@ -110,20 +110,21 @@ random.seed(seed)
 
 
 # Loading element detection model
-args_det.device = CUDA_
-det_model, _, _ = build_det_model(args_det)
-checkpoint = torch.load(args_det.weights, map_location='cpu')
+args = parser.parse_args()
+args.device = CUDA_
+det_model, _, _ = build_det_model(args)
+checkpoint = torch.load(args.weights, map_location='cpu')
 det_model.load_state_dict(checkpoint['model'])
 det_model.to(CUDA_)
 det_model.eval()
 print("Loaded element detection model at Epoch {}".format(checkpoint['epoch']))
 
-for f in os.listdir(args_det.output_path):
-    os.remove(args_det.output_path + f) 
+for f in os.listdir(args.output_path):
+    os.remove(args.output_path + f) 
 
-for image_name in tq.tqdm(os.listdir(args_det.input_path)):
-    image_path = args_det.input_path + "/" + image_name
-    legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, image_path, image_name, args_det.output_path)
+for image_name in tq.tqdm(os.listdir(args.input_path)):
+    image_path = args.input_path + "/" + image_name
+    legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, image_path, image_name, args.output_path)
 
 	# # FOR METRICS
 	# txt_str = ""

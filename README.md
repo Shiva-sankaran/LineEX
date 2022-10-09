@@ -10,23 +10,27 @@ The LineEX pipeline consists of three modular stages, which can be used independ
 
 ## Usage
 
-Clone this repository:
+### Clone this repository:
 ```
 git clone https://github.com/Shiva-sankaran/LineEX.git
 cd LineEx
 ```
-Install the dependencies:
+### Install the dependencies:
 
 ```
 conda env create -f environment.yml
 conda activate LineEx
 ```
 
-Each of the modules can be used separately, or the entire pipeline can be called at once to extract the desired information.
+### Downlaod weights and data
+Weights and data will be placed at the correct folders
+```
+chmod +x donwload.sh
+./download.sh
+```
 
 ## Testing
-
-Output is stored in the corresponding directory
+Each of the modules can be used separately, or the entire pipeline can be called at once to extract the desired information. Output is stored in the corresponding directory
 
 ### Overall
 ```
@@ -64,9 +68,7 @@ cd modules/CE_detection
 python eval.py
 ```
 
-`python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 main_charts_dist.py --coco_path path_to_data --batch_size 14 --dataset_file charts --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth`
-
-## Training
+## Training (DATA NOT ADDED YET)
 
 
 
@@ -79,6 +81,7 @@ python train.py
 ### Chart Element Detection and Text Extraction
 ```
 python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 main_charts_dist.py --coco_path path_to_data --batch_size 14 --dataset_file charts --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth
+
 ```
 
 
