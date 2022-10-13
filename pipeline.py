@@ -220,7 +220,7 @@ for image_name in tq.tqdm(input_files):
     print("Running: {}".format(image_name))
     file_path = args.input_path + "/" + image_name
 
-    legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path, args.plot_boxes)
+    legend_bboxes, legend_text, legend_text_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path, args.plot_boxes)
     x_text, x_coords, x_ratio, x_med_ids = xticks_info
     y_text, y_coords, y_ratio, y_med_ids = yticks_info
     if(legend_bboxes == []):
@@ -298,8 +298,6 @@ for image_name in tq.tqdm(input_files):
         draw.line(line, fill=(0, 255, 0), width=2)
         lines[i] = line
         pred_line[image_name].append(line_)
-    with open(args.output_path+ "/pred_data_"+ image_name+".json", "w") as outfile:
-        json.dump(pred_line, outfile)
     
 
     for line_idx_, line in lines.items():
@@ -314,5 +312,16 @@ for image_name in tq.tqdm(input_files):
     print(time.time() - start_time)
     timings.append(time.time() - start_time)
 
+    temp = {}
+    for k, v in unique_boxes.items():
+        temp[k] = np.array(v).tolist()
+    temp[6] = x_coords.tolist() + y_coords.tolist()
+    temp[7] = np.array(legend_bboxes).tolist()
+    temp[8] = np.array(legend_text_boxes).tolist()
+    out_file = {}
+    out_file['CE'] = temp
+    out_file['KP'] = pred_line
+    with open(args.output_path+ "/pred_data_"+ image_name+".json", "w") as outfile:
+        json.dump(out_file, outfile)
 
 print("Overall time taken to run {} is {}".format(len(input_files),np.mean(timings)))

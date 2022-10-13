@@ -87,7 +87,7 @@ num_gpus = torch.cuda.device_count()
 parser.add_argument('--input_path',default="sample_input/")
 parser.add_argument('--output_path',default="sample_output/")
 
-CUDA_ = 'cuda:3'
+CUDA_ = 'cuda'
 SEED = 42
 
 seed = SEED + utils.get_rank()
@@ -124,20 +124,4 @@ for f in os.listdir(args.output_path):
 
 for image_name in tq.tqdm(os.listdir(args.input_path)):
     image_path = args.input_path + "/" + image_name
-    legend_bboxes, legend_text, legend_text_boxes, legend_ele_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, image_path, image_name, args.output_path)
-
-	# # FOR METRICS
-	# txt_str = ""
-	# for c, box in unique_boxes.items():
-	# 	box = box_ops.box_cxcywh_to_xyxy(box)
-	# 	txt_str += str(c)+" 1.0 "+str(int(box[0]))+" "+str(int(box[1]))+" "+str(int(box[2]))+" "+str(int(box[3]))+"\n"
-	# txt_str = prepare_txt(txt_str, np.array(xticks_info[1]), 6)
-	# txt_str = prepare_txt(txt_str, np.array(yticks_info[1]), 6)
-	# txt_str = prepare_txt(txt_str, np.array(legend_bboxes), 7)
-	# txt_str = prepare_txt(txt_str, np.array(legend_text_boxes), 8)
-	# txt_str = prepare_txt(txt_str, np.array(legend_ele_boxes), 9)
-	# txt_str = txt_str[:-1]
-	# with open(txt_save_path +image_name[:-4]+'.txt', 'w') as f:
-	# 	f.write(txt_str)
-    x_text, x_coords, x_ratio, x_med_ids = xticks_info
-    y_text, y_coords, y_ratio, y_med_ids = yticks_info
+    legend_bboxes, legend_text, legend_text_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, image_path, image_name, args.output_path)

@@ -324,7 +324,6 @@ def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
 	tick_bboxes = []
 	legend_marker_bboxes = []
 	legend_text_bboxes = []     
-	legend_ele_bboxes = []   
 	for class_idx, box_idx in enumerate(non_unique_classes):
 		cls_boxes = pred_boxes[non_unique_classes[class_idx]]
 		dets = box_ops.box_cxcywh_to_xyxy(cls_boxes) #tl, br
@@ -342,8 +341,6 @@ def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
 				legend_marker_bboxes.append(np.array(box))
 			elif cls == 8: # legend text bbox
 				legend_text_bboxes.append(np.array(box))
-			elif cls == 9: # legend element bbox
-				legend_ele_bboxes.append(np.array(box))
 
 	# match OCR predicted legend text boxes and DETR predicted legend text boxes
 	ocr_offset_box = [-5, -5, 5, 5]  #xyxy
@@ -451,19 +448,19 @@ def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
 		# print("Not enough x ticks extracted. Unable to scale x axis")
 		y_ratio, y_med_ids = get_ratio(y_text, np.array(y_coords)[:, 1])
 		yticks_info = [y_text, y_coords, y_ratio, y_med_ids]
-		return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, [[],[],[],[]], yticks_info, unique_boxes
+		return final_marker, final_leg_text, final_leg_text_box, [[],[],[],[]], yticks_info, unique_boxes
 	elif len(y_text) < 2 and len(x_text) >= 2:
 		# print("Not enough y ticks extracted. Unable to scale y axis")
 		x_ratio, x_med_ids = get_ratio(x_text, np.array(x_coords)[:, 0])
 		xticks_info = [x_text, x_coords, x_ratio, x_med_ids]
-		return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, xticks_info, [[],[],[],[]], unique_boxes
+		return final_marker, final_leg_text, final_leg_text_box, xticks_info, [[],[],[],[]], unique_boxes
 	elif len(y_text) < 2 and len(x_text) < 2:
 		# print("Not enough x ticks and y ticks extracted. Unable to scale both axes")
-		return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, [[],[],[],[]], [[],[],[],[]], unique_boxes
+		return final_marker, final_leg_text, final_leg_text_box, [[],[],[],[]], [[],[],[],[]], unique_boxes
 
 	x_ratio, x_med_ids = get_ratio(x_text, np.array(x_coords)[:, 0])
 	y_ratio, y_med_ids = get_ratio(y_text, np.array(y_coords)[:, 1])
 	xticks_info = [x_text, x_coords, x_ratio, x_med_ids]
 	yticks_info = [y_text, y_coords, y_ratio, y_med_ids]
 
-	return final_marker, final_leg_text, final_leg_text_box, legend_ele_bboxes, xticks_info, yticks_info, unique_boxes
+	return final_marker, final_leg_text, final_leg_text_box, xticks_info, yticks_info, unique_boxes

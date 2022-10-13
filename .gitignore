@@ -8,3 +8,4 @@ modules/KP_detection/input
 modules/KP_detection/results
 modules/CE_detection/ckpts/
 modules/Grouping_legend_mapping/ckpts/
+weights.zip

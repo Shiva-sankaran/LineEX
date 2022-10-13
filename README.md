@@ -65,7 +65,7 @@ python eval.py
 ### Chart element detection
 ```
 cd modules/CE_detection
-python eval.py
+python run.py
 ```
 
 ## Training (DATA NOT ADDED YET)
@@ -80,7 +80,8 @@ python train.py
 
 ### Chart Element Detection and Text Extraction
 ```
-python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 main_charts_dist.py --coco_path path_to_data --batch_size 14 --dataset_file charts --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth
+cd modules/CE_detection
+python -m torch.distributed.launch train.py --coco_path path_to_data
 
 ```
 

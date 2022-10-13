@@ -23,7 +23,7 @@ def get_args_parser():
     parser = argparse.ArgumentParser('Set transformer detector', add_help=False)
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_backbone', default=1e-5, type=float)
-    parser.add_argument('--batch_size', default=2, type=int)
+    parser.add_argument('--batch_size', default=14, type=int)
     parser.add_argument('--weight_decay', default=1e-4, type=float)
     parser.add_argument('--epochs', default=200, type=int)
     parser.add_argument('--lr_drop', default=50, type=int)
@@ -90,7 +90,7 @@ def get_args_parser():
     parser.add_argument('--output_dir', type=str, default='')
     parser.add_argument('--save_dir', type=str)
     parser.add_argument('--seed', default=42, type=int)
-    parser.add_argument('--resume', type=str, help='resume from checkpoint')
+    parser.add_argument('--resume', default='https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth', type=str, help='resume from checkpoint')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
     parser.add_argument('--eval', action='store_true')
@@ -99,6 +99,7 @@ def get_args_parser():
 
     # distributed training parameters
     parser.add_argument('--distributed', default=True, type=bool)
+    parser.add_argument('--nproc_per_node', default=4, type=int)
     parser.add_argument('--local_rank', default=0, type=int)
     parser.add_argument('--num_gpus', default=3, type=int)
     parser.add_argument('--world_size', default=1, type=int, help='number of distributed processes')
@@ -269,6 +270,6 @@ if __name__ == '__main__':
     main(args)
 
 # COMMAND TO RUN:
-# python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 main_charts_dist.py 
-# --coco_path /home/md.hassan/charts/data/data/synth_lines/data/st_lines --batch_size 14 
+# python -m torch.distributed.launch --nproc_per_node=4 --node_rank=0 train.py 
+# --coco_path /home/md.hassan/charts/data/data/synth_lines/data/train --batch_size 14 
 # --dataset_file charts --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth
