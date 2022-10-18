@@ -22,7 +22,7 @@ conda env create -f environment.yml
 conda activate LineEX
 ```
 
-### Downlaod weights and data
+### Download weights and data
 Weights and data will be placed at the correct folders
 ```
 chmod +x download.sh
