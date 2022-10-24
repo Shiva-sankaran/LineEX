@@ -24,9 +24,12 @@ conda activate LineEX
 
 ### Download weights and data
 Weights and data will be placed at the correct folders
+
+Set corresponding DATA_flag(True/False) to download a particular data set.
+
 ```
 chmod +x download.sh
-./download.sh
+./download.sh -T Train_flag -V Val_flag  -L Test_flag 
 ```
 
 ## Testing
@@ -68,7 +71,7 @@ cd modules/CE_detection
 python run.py
 ```
 
-## Training (DATA NOT ADDED YET)
+## Training 
 
 
 
@@ -90,5 +93,4 @@ python -m torch.distributed.launch train.py --coco_path path_to_data
 ## TBA
 Need to change data paths
 
-Add folders for data and weight 
 ## Citation
