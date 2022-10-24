@@ -11,7 +11,7 @@ sys.path.append('/home/md.hassan/charts/ChartIE')
 
 num_gpus = torch.cuda.device_count()
 
-CUDA_ = 'cuda:3'
+CUDA_ = 'cuda:1'
 SEED = 42
 
 # fix the seed for reproducibility
@@ -305,6 +305,7 @@ def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
 
 	# get boxes and text from OCR
 	ocr_results = reader.readtext(image_, width_ths=1.2, rotation_info = [270]) # assuming 270 deg rotation for vertical text and (possibly) rotated ticks text
+	# ocr_results = []
 	# # plot OCR result
 	# for result in ocr_results:
 	# 	r = np.array(result[0]).astype(int)
@@ -365,6 +366,7 @@ def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
 	final_marker = []
 	final_leg_text = []
 	final_leg_text_box = []
+	ocr_boxes = np.array(ocr_boxes)
 	ocr_boxes = ocr_boxes.astype(np.int32)
 	while(count < min(np.array(giou_matrix_legend_marker).shape)):
 		giou_matrix_legend_marker, score, text_box_idx, marker_idx = find_max(np.array(giou_matrix_legend_marker))

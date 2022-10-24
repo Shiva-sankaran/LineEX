@@ -11,6 +11,7 @@ from modules.CE_detection.util.utils import run_element_det
 
 from modules.Grouping_legend_mapping.legend_models.net import *
 from modules.Grouping_legend_mapping.legend_models.MLP import legend_network
+from modules.Grouping_legend_mapping.post_processing.colour_cmp import hist_cmp
 
 from modules.KP_detection.models.my_model import Model
 from modules.KP_detection.utils import *
@@ -143,7 +144,7 @@ parser.add_argument('--num_workers', default=24, type=int)
 parser.add_argument('--show_keypoints', default=True, type=bool)
 
 ## CUSTOM ARGS ##
-parser.add_argument('--input_path',default="sample_input")
+parser.add_argument('--input_path',default="sample_input/")#"/home/md.hassan/charts/data/data/synth_lines/temp/images"
 parser.add_argument('--output_path',default="sample_output/")
 # parser.add_argument('--data_path',default='/home/md.hassan/charts/s_CornerNet/synth_data/data/line/figqa/val/',help = "path to data (Ours, Adobe)")
 parser.add_argument('--use_gpu',default=True)
@@ -151,11 +152,13 @@ parser.add_argument('--cuda_id',default=1)
 
 
 ## KEYPOINT CHECKPOINT ##
-parser.add_argument('--KP_path',default="modules/KP_detection/pretrained_ckpts/ckpt_L+D.t7")
+parser.add_argument('--KP_path',default="modules/KP_detection/ckpts/ckpt_L+D.t7")
 
 ## GROUPING AND LEGEND MAPPING CHECKPOINT ##
 parser.add_argument('--deepranking_path',default="modules/Grouping_legend_mapping/ckpts/ckpt_30.t7")
 parser.add_argument('--MLP_path',default="modules/Grouping_legend_mapping/ckpts/mlp_ckpt.t7")
+
+
 
 args, unknown = parser.parse_known_args()
 if(args.use_gpu):
@@ -214,6 +217,8 @@ for f in os.listdir(args.output_path):
 print("Running whole pipeline for {} images".format(len(input_files)))
 timings = []
 for image_name in tq.tqdm(input_files):
+    # if(image_name != "temp1.png"):
+    #     continue
     pred_line = {}
 
     start_time = time.time()
@@ -244,6 +249,7 @@ for image_name in tq.tqdm(input_files):
     cv2.imwrite(args.output_path + 'kp_' + image_name, image)
 
     legends_list = []
+    legend_patches = []
     # ------ (Grouping and Legend mapping on GT keypoints) ------
     Scores = np.zeros((len(legend_bboxes), len(all_kps))) # Legends in Rows, Lines in Cols
     draw = ImageDraw.Draw(image_cls)
@@ -257,6 +263,7 @@ for image_name in tq.tqdm(input_files):
             crop = image[int(bbox[1]):int(bbox[3]+bbox[1]), int(bbox[0]):int(bbox[2]+bbox[0])]
             crop = Image.fromarray(crop).convert('RGB')
             tcrop = crop.copy()
+            legend_patches.append(tcrop)
             crop = transform_test(crop).reshape(1, 3, 224, 224)
         except:
             print("legend bbox out of bounds")
@@ -265,6 +272,7 @@ for image_name in tq.tqdm(input_files):
         legends_list.append(crop)
 
     for legend_idx, legend in enumerate(legends_list):
+        legend_patch = legend_patches[legend_idx]
         legend = legend.to(CUDA_)
         legend_vec,_,_ = emb_model(legend,legend,legend)
 
@@ -275,6 +283,7 @@ for image_name in tq.tqdm(input_files):
             try:
                 crop = image[int(bbox[1]):int(bbox[3]+bbox[1]), int(bbox[0]):int(bbox[2]+bbox[0])]
                 crop = Image.fromarray(crop).convert('RGB')
+                kp_patch = crop
                 crop = transform_test(crop).reshape(1, 3, 224, 224)
             except:
                 print("keypoint crop out of bound; skipping. image_name = ", + str(image_name))
@@ -284,6 +293,10 @@ for image_name in tq.tqdm(input_files):
             with torch.no_grad():
                 output = MLP(legend_vec, kp_vec)
                 match_confidence = output.item()
+            
+            colour_confidence = hist_cmp(kp_patch,legend_patch)
+            match_confidence  =  colour_confidence #alpha*match_confidence + (1-alpha)*colour_confidence, wierd pure colour confidence seems to work better
+            
             Scores[legend_idx][kp_idx] = match_confidence
 
     kp_mapping = Scores.argmax(axis=0)
@@ -307,7 +320,7 @@ for image_name in tq.tqdm(input_files):
         draw.text((line[-1][0], line[-1][1]), str(len(line)), font = fnt, fill = (255, 0, 0))
         xy_list = [(line[-1][0], line[-1][1]), (legend_bbox[0], legend_bbox[1])]
         draw.line(xy_list, fill=(255, 0, 0), width=1)
-    save_path = args.output_path + 'mapped_' + image_name
+    save_path = args.output_path + 'mapped_'+ image_name
     image_cls.save(save_path)
     print(time.time() - start_time)
     timings.append(time.time() - start_time)
@@ -325,3 +338,6 @@ for image_name in tq.tqdm(input_files):
         json.dump(out_file, outfile)
 
 print("Overall time taken to run {} is {}".format(len(input_files),np.mean(timings)))
+
+
+
