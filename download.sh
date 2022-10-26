@@ -1,6 +1,7 @@
 echo "Downloading weights"
 gdown 176BjH_6W-HRoU9RvsysSNW27GVIHPlHV
 mkdir temp/
+mkdir data/
 mkdir modules/CE_detection/ckpts
 mkdir modules/KP_detection/ckpts
 mkdir modules/Grouping_legend_mapping/ckpts
@@ -27,6 +28,10 @@ echo "Moved checkpoints to corresponding dir"
     echo "VAL: $TEST_PWD";
     echo "TEST: $TEST_JOBID";
 
+if [ $TRAIN == "True"] || [ $VAL == "True" ] || [ $TEST == "True" ]
+then 
+   mkdir data/
+fi
 
 if [ $TRAIN == "True" ]
 then

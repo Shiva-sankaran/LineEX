@@ -2,9 +2,26 @@ name: LineEX
 channels:
   - defaults
 dependencies:
-  - python=3.8
-  - pytorch
-  - cudatoolkit=11.3
-  - torchvision
+  - defaults/linux-64::_libgcc_mutex==0.1=main
+  - ca-certificates
+  - defaults/linux-64::ld_impl_linux-64==2.35.1=h7274673_9
+  - defaults/linux-64::libstdcxx-ng==9.3.0=hd4cf53a_17
+  - defaults/linux-64::libgomp==9.3.0=h5101ec6_17
+  - defaults/linux-64::_openmp_mutex==4.5=1_gnu
+  - defaults/linux-64::libgcc-ng==9.3.0=h5101ec6_17
+  - defaults/linux-64::libffi==3.3=he6710b0_2
+  - defaults/linux-64::ncurses==6.3=h7f8727e_2
+  - openssl
+  - defaults/linux-64::xz==5.2.5=h7b6447c_0
+  - defaults/linux-64::zlib==1.2.11=h7f8727e_4
+  - defaults/linux-64::readline==8.1.2=h7f8727e_1
+  - defaults/linux-64::tk==8.6.11=h1ccaba5_0
+  - defaults/linux-64::sqlite==3.37.0=hc218d9a_0
+  - defaults/linux-64::python==3.8.12=h12debd9_0
+  - certifi
+  - wheel
+  - pip
   - ipykernel
-prefix: /home/md.hassan/miniconda3/envs/LineEX
+  - setuptools
+  - ipywidgets
+prefix: /home/vp.shivasan/miniconda3/envs/ChartIE
