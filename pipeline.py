@@ -147,7 +147,7 @@ parser.add_argument('--show_keypoints', default=True, type=bool)
 parser.add_argument('--input_path',default="sample_input/")#"/home/md.hassan/charts/data/data/synth_lines/temp/images"
 parser.add_argument('--output_path',default="sample_output/")
 # parser.add_argument('--data_path',default='/home/md.hassan/charts/s_CornerNet/synth_data/data/line/figqa/val/',help = "path to data (Ours, Adobe)")
-parser.add_argument('--use_gpu',default=True)
+parser.add_argument('--use_gpu',default=False)
 parser.add_argument('--cuda_id',default=1)
 
 
@@ -225,7 +225,7 @@ for image_name in tq.tqdm(input_files):
     print("Running: {}".format(image_name))
     file_path = args.input_path + "/" + image_name
 
-    legend_bboxes, legend_text, legend_text_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path, args.plot_boxes)
+    legend_bboxes, legend_text, legend_text_boxes,  xticks_info, yticks_info, unique_boxes = run_element_det(det_model, file_path, image_name, args.output_path, args.plot_boxes,CUDA_)
     x_text, x_coords, x_ratio, x_med_ids = xticks_info
     y_text, y_coords, y_ratio, y_med_ids = yticks_info
     if(legend_bboxes == []):

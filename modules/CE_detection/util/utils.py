@@ -267,7 +267,7 @@ def get_ratio(text, coord):
 	best_tick_ids = combination_list[med_idx]
 	return med, best_tick_ids
 
-def run_element_det(model, image_path, image_name, image_save_path, plot_boxes):
+def run_element_det(model, image_path, image_name, image_save_path, plot_boxes,CUDA_):
 	image = cv2.imread(image_path)
 	image_ = image.copy()
 	image = image.astype(np.float32)
