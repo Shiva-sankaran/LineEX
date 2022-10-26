@@ -13,6 +13,7 @@ from tabnanny import check
 from typing import Optional, List
 import sys
 sys.path.append("LineEX/modules/KP_detection")
+sys.path.append("modules/KP_detection")
 import torch
 import torch.nn.functional as F
 from torch import nn, Tensor

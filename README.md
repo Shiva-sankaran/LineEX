@@ -20,7 +20,6 @@ cd LineEX
 ```
 conda env create -f environment.yml
 conda activate LineEX
-pip install gdown
 ```
 
 ### Download weights and data
