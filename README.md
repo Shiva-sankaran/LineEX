@@ -29,7 +29,7 @@ Set corresponding DATA_flag(True/False) to download a particular data set.
 
 ```
 chmod +x download.sh
-./download.sh -T Train_flag -V Val_flag  -L Test_flag 
+./download.sh -T False -V False  -L True  # To download only the test data 
 ```
 
 ## Testing
@@ -37,7 +37,7 @@ Each of the modules can be used separately, or the entire pipeline can be called
 
 ### Overall
 ```
-python pipeline.py
+python pipeline.py --input_path = sample_input/
 ```
 ### Keypoint detection
 ```
