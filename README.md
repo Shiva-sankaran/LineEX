@@ -32,6 +32,8 @@ chmod +x download.sh
 ./download.sh -T False -V False  -L True  # To download only the test data 
 ```
 
+### UPDATE: Dataset moved to [here](https://iitgnacin-my.sharepoint.com/:f:/g/personal/md_hassan_iitgn_ac_in/EnX4sNoMnrdAmCVEB55r95EB_h5Xa_uk04zvEPg5ZLLGZw?e=KAILBD).
+
 ## Testing
 Each of the modules can be used separately, or the entire pipeline can be called at once to extract the desired information. Output is stored in the corresponding directory
 
