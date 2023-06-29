@@ -96,3 +96,5 @@ python -m torch.distributed.launch train.py --coco_path path_to_data
 Need to change data paths
 
 ## Citation
+
+Shivasankaran, V. P., Muhammad Yusuf Hassan, and Mayank Singh. "LineEX: Data Extraction from Scientific Line Charts." 2023 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV). IEEE, 2023.
