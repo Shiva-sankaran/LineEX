@@ -80,7 +80,7 @@ python run.py
 ### Keypoint Extraction
 ```
 cd modules/KP_detection
-python train.py
+python -m torch.distributed.launch --nproc_per_node=3 --node_rank=0 train.py --vit_arch xcit_small_12_p16 --batch_size 42 --input_size 288 384 --hidden_dim 384 --vit_dim 384 --num_workers 24 --vit_weights https://dl.fbaipublicfiles.com/xcit/xcit_small_12_p16_384_dist.pth --alpha 0.99
 ```
 
 ### Chart Element Detection and Text Extraction
