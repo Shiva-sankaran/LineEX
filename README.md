@@ -33,6 +33,7 @@ chmod +x download.sh
 ```
 
 ### UPDATE: Dataset moved to [here](https://iitgnacin-my.sharepoint.com/:f:/g/personal/md_hassan_iitgn_ac_in/EnX4sNoMnrdAmCVEB55r95EB_h5Xa_uk04zvEPg5ZLLGZw?e=KAILBD).
+### UPDATE: Weights can be found [here](https://drive.google.com/drive/folders/15bKREf2EBORHBZx_xz53eVJzs9e4cZ7Q?usp=sharing)
 
 ## Testing
 Each of the modules can be used separately, or the entire pipeline can be called at once to extract the desired information. Output is stored in the corresponding directory
