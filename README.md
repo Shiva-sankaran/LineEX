@@ -32,7 +32,7 @@ chmod +x download.sh
 ./download.sh -T False -V False  -L True  # To download only the test data 
 ```
 
-### UPDATE: Dataset moved to [here](https://iitgnacin-my.sharepoint.com/:f:/g/personal/19110020_iitgn_ac_in/EnX4sNoMnrdAmCVEB55r95EB_h5Xa_uk04zvEPg5ZLLGZw?e=ftXmKC).
+### UPDATE: Dataset moved to [here](https://iitgnacin-my.sharepoint.com/:f:/g/personal/19110020_alumni_iitgn_ac_in/EnX4sNoMnrdAmCVEB55r95EB_h5Xa_uk04zvEPg5ZLLGZw).
 ### UPDATE: Weights can be found [here](https://drive.google.com/drive/folders/15bKREf2EBORHBZx_xz53eVJzs9e4cZ7Q?usp=sharing)
 
 ## Testing
